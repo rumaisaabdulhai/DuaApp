@@ -24,18 +24,24 @@ public class DuaDetailActivity extends Activity {
         String group = intent.getStringExtra(DUA_GROUP);
         String dua = intent.getStringExtra(DUA_NAME);
 
-        TextView titleView = findViewById(R.id.duaCategoryTitle);
+        TextView titleView = findViewById(R.id.duaTitleText);
         titleView.setText(group + " - " + dua);
 
         try {
             DatabaseHelper databaseHelper = new DatabaseHelper(this.getApplicationContext());
             SQLiteDatabase db = databaseHelper.getReadableDatabase();
 
-            Cursor res = db.rawQuery("select * from DUAS where category = '" + group + "' and name = '" + dua + "'", null);
+            String selectSql = "select arabic, transliteration, translation, reference from duas " +
+                    "where category = ? and name = ?";
+            String[] parameters = {group, dua};
+            Cursor res = db.rawQuery(selectSql, parameters);
             while (res.moveToNext()) {
-                String arabicText = res.getString(3);
-                String transliteration = res.getString(4);
-                String translation = res.getString(5);
+                String arabicText = res.getString(0);
+                String transliteration = res.getString(1);
+                String translation = res.getString(2);
+                String reference = res.getString(3);
+
+                Log.i("database values" , arabicText + " " + transliteration + " " + translation);
 
                 TextView arabicTextView = findViewById(R.id.duaArabicText);
                 arabicTextView.setText(arabicText);
@@ -45,6 +51,9 @@ public class DuaDetailActivity extends Activity {
 
                 TextView translationTextView = findViewById(R.id.duaTranslationText);
                 translationTextView.setText(translation);
+
+                TextView referenceTextView = findViewById(R.id.duaReferenceText);
+                referenceTextView.setText(reference);
             }
         } catch (Exception e) {
             Log.e("Error happened", "Reading database", e);
