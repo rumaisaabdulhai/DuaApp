@@ -120,4 +120,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void returnMain(View view) {
+        super.onBackPressed();
+    }
+
 }
