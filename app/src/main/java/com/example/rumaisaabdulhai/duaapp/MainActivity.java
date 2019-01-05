@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
             String line;
             String[] values;
             String insertSql = "insert into duas(category, name, audioFileName, arabic, transliteration, translation, reference)" +
-                    "values(?, ?, ?, ?, ?, ?)";
+                    "values(?, ?, ?, ?, ?, ?, ?)";
             while ((line = bufferedReader.readLine()) != null) {
                 values = line.split("\\|");
                 List<String> list = new ArrayList<>();
