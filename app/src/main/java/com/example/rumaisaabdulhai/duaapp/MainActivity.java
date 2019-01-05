@@ -88,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
             database.execSQL(dropTableSql);
             String createTableSql = "create table if not exists duas(category varchar(255) not null, " +
                     "name varchar(255) not null, " +
+                    "audioFileName varchar(255), " +
                     "arabic text not null, " +
                     "transliteration text, " +
                     "translation text, " +
@@ -101,13 +102,14 @@ public class MainActivity extends AppCompatActivity {
             BufferedReader bufferedReader = new BufferedReader(streamReader);
             String line;
             String[] values;
-            String insertSql = "insert into duas(category, name, arabic, transliteration, translation, reference)" +
+            String insertSql = "insert into duas(category, name, audioFileName, arabic, transliteration, translation, reference)" +
                     "values(?, ?, ?, ?, ?, ?)";
             while ((line = bufferedReader.readLine()) != null) {
                 values = line.split("\\|");
                 List<String> list = new ArrayList<>();
                 list.add(values[0]);
                 list.add(values[1]);
+                list.add(values[2]);
                 list.add(values[3]);
                 list.add(values[4]);
                 list.add(values[5]);
