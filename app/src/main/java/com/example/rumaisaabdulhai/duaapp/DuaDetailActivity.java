@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -60,6 +61,10 @@ public class DuaDetailActivity extends Activity {
         }
 
 
+    }
+
+    public void returnMain(View view) {
+        super.onBackPressed();
     }
 
 }
