@@ -73,10 +73,7 @@ public class DuaDetailActivity extends Activity {
                 //InputStream inputStream = assets.open(audioFileName);
                 AssetFileDescriptor fd = assets.openFd(audioFileName);
                 Log.e("Asset file descriptor", fd.getFileDescriptor().toString());
-                Uri myUri = Uri.parse("android.resource://com.example.rumaisaabdulhai.duaapp/res/raw/" + audioFileName);
-                Log.i("Playing resource", myUri.toString());
                 player.setDataSource(fd.getFileDescriptor(), fd.getStartOffset(), fd.getLength());
-                //player.setDataSource(getApplicationContext(), myUri);
                 player.prepare();
             }
         } catch (Exception e) {
@@ -112,10 +109,6 @@ public class DuaDetailActivity extends Activity {
     public void changeIcon(boolean playing) {
         ImageButton button = findViewById(R.id.playButton);
         button.setImageResource(playing ? android.R.drawable.ic_media_pause : android.R.drawable.ic_media_play);
-    }
-
-    public void stopAudio(View view) {
-        player.pause();
     }
 
 }
