@@ -28,6 +28,20 @@
         android:layout_margin="8dp"
         android:textSize="25dp"/>
 
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/duaReferenceText">
+
+        <ImageButton
+            android:onClick="playAudio"
+            android:id="@+id/playButton"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_button"
+            android:src="@android:drawable/ic_media_play" />
+    </LinearLayout>
+
     <TextView
         android:id = "@+id/duaTransliterationText"
         android:layout_width="match_parent"
@@ -35,6 +49,8 @@
         android:textColor="@color/black"
         android:layout_margin="8dp"
         android:textSize="20dp"/>
+
+
 
     <TextView
         android:id = "@+id/duaTranslationText"
