@@ -122,4 +122,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void showMap(View view) {
+        Intent myIntent = new Intent(this.getApplicationContext(), MapsActivity.class);
+        startActivityForResult(myIntent,0);
+
+    }
+
 }

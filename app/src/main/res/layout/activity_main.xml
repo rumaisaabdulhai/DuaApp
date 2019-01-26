@@ -16,4 +16,16 @@
        >
    </ExpandableListView>
 
+   <Button
+       android:onClick="showMap"
+       android:id="@+id/MapButton"
+       style="@android:style/Widget.DeviceDefault.Button.Borderless"
+       android:layout_width="150dp"
+       android:layout_height="wrap_content"
+       android:background="@drawable/custom_button"
+       android:layout_centerInParent="true"
+       android:text="ShowMap"
+       android:textColor="@color/white"
+       android:textSize="20sp" />
+
 </android.support.constraint.ConstraintLayout>
