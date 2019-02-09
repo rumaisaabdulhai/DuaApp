@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "528615015979",
+    "firebase_url": "https://duaapp-6fb02.firebaseio.com",
+    "project_id": "duaapp-6fb02",
+    "storage_bucket": "duaapp-6fb02.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:528615015979:android:80c9509c58075956",
+        "android_client_info": {
+          "package_name": "com.example.rumaisaabdulhai.duaapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "528615015979-2nssed99496mskkgqge38omev437s6fi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGEgPP2kZsVwrtoelLjF5uHK88N2Jz7TU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
