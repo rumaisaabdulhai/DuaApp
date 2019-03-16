@@ -51,9 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             DatabaseHelper databaseHelper = new DatabaseHelper(this.getApplicationContext());
-            databaseHelper.createDataBase();
-            SQLiteDatabase db = databaseHelper.getReadableDatabase();
-            populateDatabase(this.getApplicationContext(), db);
+            SQLiteDatabase db = databaseHelper.populateDatabase(this.getApplicationContext());
 
             Cursor res = db.rawQuery("select name, category from DUAS", null);
             while (res.moveToNext()) {
@@ -86,48 +84,6 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-    }
-
-    private void populateDatabase(Context context, SQLiteDatabase database) {
-// load data
-        AssetManager assetManager = context.getAssets();
-        try {
-            String dropTableSql = "drop table if exists duas";
-            database.execSQL(dropTableSql);
-            String createTableSql = "create table if not exists duas(category varchar(255) not null, " +
-                    "name varchar(255) not null, " +
-                    "audioFileName varchar(255), " +
-                    "arabic text not null, " +
-                    "transliteration text, " +
-                    "translation text, " +
-                    "reference text)";
-            database.execSQL(createTableSql);
-            String deleteTableSql = "delete from duas";
-            database.execSQL(deleteTableSql);
-
-            InputStream inputStream = assetManager.open("duas.csv");
-            InputStreamReader streamReader = new InputStreamReader(inputStream);
-            BufferedReader bufferedReader = new BufferedReader(streamReader);
-            String line;
-            String[] values;
-            String insertSql = "insert into duas(category, name, audioFileName, arabic, transliteration, translation, reference)" +
-                    "values(?, ?, ?, ?, ?, ?, ?)";
-            while ((line = bufferedReader.readLine()) != null) {
-                values = line.split("\\|");
-                List<String> list = new ArrayList<>();
-                list.add(values[0]);
-                list.add(values[1]);
-                list.add(values[2]);
-                list.add(values[3]);
-                list.add(values[4]);
-                list.add(values[5]);
-                list.add(values[6]);
-                database.execSQL(insertSql, list.toArray());
-            }
-        } catch (IOException e) {
-            Log.e("TBCAE", "Failed to open data input file");
-            e.printStackTrace();
-        }
     }
 
     public void showMap(View view) {

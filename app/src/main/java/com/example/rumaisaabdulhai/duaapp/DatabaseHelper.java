@@ -1,16 +1,22 @@
 package com.example.rumaisaabdulhai.duaapp;
 
 import android.content.Context;
+import android.content.res.AssetManager;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -79,6 +85,63 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if(newVersion>oldVersion) {
         deleteDataBase();
         }
+
+    }
+
+    public void populateDatabase(Context context, SQLiteDatabase database) {
+// load data
+        AssetManager assetManager = context.getAssets();
+        try {
+            String dropTableSql = "drop table if exists duas";
+            database.execSQL(dropTableSql);
+            String createTableSql = "create table if not exists duas(category varchar(255) not null, " +
+                    "name varchar(255) not null, " +
+                    "audioFileName varchar(255), " +
+                    "arabic text not null, " +
+                    "transliteration text, " +
+                    "translation text, " +
+                    "reference text)";
+            database.execSQL(createTableSql);
+            String deleteTableSql = "delete from duas";
+            database.execSQL(deleteTableSql);
+
+            InputStream inputStream = assetManager.open("duas.csv");
+            InputStreamReader streamReader = new InputStreamReader(inputStream);
+            BufferedReader bufferedReader = new BufferedReader(streamReader);
+            String line;
+            String[] values;
+            String insertSql = "insert into duas(category, name, audioFileName, arabic, transliteration, translation, reference)" +
+                    "values(?, ?, ?, ?, ?, ?, ?)";
+            while ((line = bufferedReader.readLine()) != null) {
+                values = line.split("\\|");
+                List<String> list = new ArrayList<>();
+                list.add(values[0]);
+                list.add(values[1]);
+                list.add(values[2]);
+                list.add(values[3]);
+                list.add(values[4]);
+                list.add(values[5]);
+                list.add(values[6]);
+                database.execSQL(insertSql, list.toArray());
+            }
+        } catch (IOException e) {
+            Log.e("TBCAE", "Failed to open data input file");
+            e.printStackTrace();
+        }
+    }
+
+    public SQLiteDatabase populateDatabase(Context context) {
+        try {
+            DatabaseHelper databaseHelper = new DatabaseHelper(context);
+            databaseHelper.createDataBase();
+            SQLiteDatabase db = databaseHelper.getReadableDatabase();
+            populateDatabase(context, db);
+            return db;
+
+        } catch (Exception e) {
+            Log.e("Error happened", "Reading database", e);
+        }
+        return null;
 
     }
 }

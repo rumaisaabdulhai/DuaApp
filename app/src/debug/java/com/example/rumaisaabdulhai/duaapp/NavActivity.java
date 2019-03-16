@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.location.Criteria;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -13,8 +15,11 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 public class NavActivity extends AppCompatActivity {
 
@@ -49,6 +54,14 @@ public class NavActivity extends AppCompatActivity {
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        try {
+            DatabaseHelper databaseHelper = new DatabaseHelper(this.getApplicationContext());
+            SQLiteDatabase db = databaseHelper.populateDatabase(this.getApplicationContext());
+
+        } catch (Exception e) {
+            Log.e("Error happened", "Reading database", e);
+        }
 
         if (checkLocationPermission()) {
             registerListener();
@@ -130,7 +143,7 @@ public class NavActivity extends AppCompatActivity {
         int minTime = 6000;
         float minDistance = 10;
 
-        CurrentLocationListener myLocationListener = new CurrentLocationListener(this.getApplicationContext());
+        CurrentLocationListener myLocationListener = new CurrentLocationListener(this);
 
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
