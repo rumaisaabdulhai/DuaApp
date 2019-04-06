@@ -12,11 +12,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.location.Criteria;
 import android.location.LocationManager;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
@@ -65,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
             Log.e("Error happened", "Reading database", e);
         }
 
-       expandableListView = (ExpandableListView) findViewById(R.id.expandListView);
+        expandableListView = (ExpandableListView) findViewById(R.id.expandListView);
         duaListViewAdapter = new DuaListViewAdapter(this, expandableListDetail);
         expandableListView.setAdapter(duaListViewAdapter);
 
@@ -84,6 +87,8 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        NavigationUtils.addNavigation(this);
     }
 
     public void showMap(View view) {
@@ -92,7 +97,4 @@ public class MainActivity extends AppCompatActivity {
         Log.e("Main", "showing Map");
 
     }
-
-
-
 }

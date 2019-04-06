@@ -100,6 +100,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "arabic text not null, " +
                     "transliteration text, " +
                     "translation text, " +
+                    "favorite INTEGER DEFAULT 0, " +
                     "reference text)";
             database.execSQL(createTableSql);
             String deleteTableSql = "delete from duas";
@@ -130,12 +131,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    public void markFavorite(String category, String name, boolean favorite,SQLiteDatabase database) {
+        String sql = "update duas set favorite=? where category=? and name=?";
+        List list = new ArrayList<>();
+        list.add(favorite ? 1:0);
+        list.add(category);
+        list.add(name);
+        database.execSQL(sql, list.toArray());
+
+    }
+
     public SQLiteDatabase populateDatabase(Context context) {
         try {
             DatabaseHelper databaseHelper = new DatabaseHelper(context);
-            databaseHelper.createDataBase();
             SQLiteDatabase db = databaseHelper.getReadableDatabase();
-            populateDatabase(context, db);
+            if (!checkDataBase()) {
+                databaseHelper.createDataBase();
+                populateDatabase(context,db);
+            }
             return db;
 
         } catch (Exception e) {
@@ -143,5 +156,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return null;
 
+    }
+
+    public SQLiteDatabase openDatabase() {
+        try {
+            DatabaseHelper databaseHelper = new DatabaseHelper(this.myContext);
+            return databaseHelper.getReadableDatabase();
+        } catch (Exception e) {
+            Log.e("Error happened", "Reading database", e);
+        }
+        return null;
     }
 }

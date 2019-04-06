@@ -2,16 +2,16 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".NavActivity">
+    tools:context=".FavoriteDuaActivity"
+    android:orientation="vertical">
 
-    <fragment
-        android:name="com.example.rumaisaabdulhai.duaapp.DuaListFragment"
-        android:id="@+id/fragment_place"
+    <ListView
+        android:id="@+id/favoriteList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content">
+    </ListView>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"

@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.InputStream;
 import java.net.URI;
@@ -27,14 +28,17 @@ import static com.example.rumaisaabdulhai.duaapp.Constants.DUA_NAME;
 
 public class DuaDetailActivity extends Activity {
     private MediaPlayer player;
+    private Boolean favorite;
+    private String group;
+    private String dua;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dua_detail_view);
         Intent intent = getIntent();
-        String group = intent.getStringExtra(DUA_GROUP);
-        String dua = intent.getStringExtra(DUA_NAME);
+        group = intent.getStringExtra(DUA_GROUP);
+        dua = intent.getStringExtra(DUA_NAME);
 
         TextView titleView = findViewById(R.id.duaTitleText);
         titleView.setText(group + " - " + dua);
@@ -43,7 +47,7 @@ public class DuaDetailActivity extends Activity {
             DatabaseHelper databaseHelper = new DatabaseHelper(this.getApplicationContext());
             SQLiteDatabase db = databaseHelper.getReadableDatabase();
 
-            String selectSql = "select arabic, transliteration, translation, reference, audioFileName from duas " +
+            String selectSql = "select arabic, transliteration, translation, reference, audioFileName, favorite from duas " +
                     "where category = ? and name = ?";
             String[] parameters = {group, dua};
             Cursor res = db.rawQuery(selectSql, parameters);
@@ -53,6 +57,7 @@ public class DuaDetailActivity extends Activity {
                 String translation = res.getString(2);
                 String reference = res.getString(3);
                 String audioFileName = res.getString(4);
+                favorite = res.getInt(5) == 1;
 
                 Log.i("database values", arabicText + " " + transliteration + " " + translation + " " + audioFileName);
 
@@ -93,6 +98,15 @@ public class DuaDetailActivity extends Activity {
 
     public void returnMain(View view) {
         super.onBackPressed();
+    }
+
+    public void markFavorite(View view) {
+        favorite = !favorite;
+        DatabaseHelper databaseHelper = new DatabaseHelper(this.getApplicationContext());
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+        databaseHelper.markFavorite(group,dua,favorite,db);
+        String ff = favorite ? "favorite": "not favorite";
+        Toast.makeText(getApplicationContext(),"Marked favorite " + group + "- '" + dua + "' " + ff, Toast.LENGTH_SHORT).show();
     }
 
     public void playAudio(View view) {
